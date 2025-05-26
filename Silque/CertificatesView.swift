@@ -1,10 +1,16 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct CertificatePair: Identifiable, Equatable {
-    let id = UUID()
+struct CertificatePair: Identifiable, Equatable, Codable {
+    let id: UUID
     let p12URL: URL
     let mobileprovisionURL: URL
+
+    init(id: UUID = UUID(), p12URL: URL, mobileprovisionURL: URL) {
+        self.id = id
+        self.p12URL = p12URL
+        self.mobileprovisionURL = mobileprovisionURL
+    }
 }
 
 enum CertImportStep: Identifiable {
@@ -20,7 +26,7 @@ enum CertImportStep: Identifiable {
 
 struct CertificatesView: View {
     @EnvironmentObject var accentManager: AccentColorManager
-    @State private var certificates: [CertificatePair] = []
+    @State private var certificates: [CertificatePair] = PersistenceManager.shared.loadCertificates()
     @State private var importStep: CertImportStep? = nil
     @State private var searchText = ""
 
@@ -125,7 +131,9 @@ struct CertificatesView: View {
             case .mobileprovision(let p12url):
                 DocumentPicker(allowedTypes: ["mobileprovision"]) { provisionURL in
                     if let provisionURL = provisionURL {
-                        certificates.insert(CertificatePair(p12URL: p12url, mobileprovisionURL: provisionURL), at: 0)
+                        let newPair = CertificatePair(p12URL: p12url, mobileprovisionURL: provisionURL)
+                        certificates.insert(newPair, at: 0)
+                        PersistenceManager.shared.saveCertificates(certificates)
                     }
                     importStep = nil
                 }
@@ -136,6 +144,7 @@ struct CertificatesView: View {
     private func removeCertificate(_ pair: CertificatePair) {
         withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
             certificates.removeAll { $0 == pair }
+            PersistenceManager.shared.saveCertificates(certificates)
         }
         haptics()
     }

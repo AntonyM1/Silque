@@ -1,18 +1,20 @@
 import SwiftUI
 
-struct AppItem: Identifiable, Equatable {
-    let id = UUID()
+struct AppItem: Identifiable, Equatable, Codable {
+    let id: UUID
     let name: String
     let icon: String
+
+    init(id: UUID = UUID(), name: String, icon: String) {
+        self.id = id
+        self.name = name
+        self.icon = icon
+    }
 }
 
 struct AppsView: View {
     @EnvironmentObject var accentManager: AccentColorManager
-    @State private var apps: [AppItem] = [
-        AppItem(name: "Safari+", icon: "safari.fill"),
-        AppItem(name: "Notes+", icon: "note.text"),
-        AppItem(name: "Mail+", icon: "envelope.fill")
-    ]
+    @State private var apps: [AppItem] = PersistenceManager.shared.loadApps()
     @State private var newAppName = ""
     @State private var newAppIcon = "app.fill"
     @State private var searchText = ""
@@ -133,6 +135,7 @@ struct AppsView: View {
             apps.insert(new, at: 0)
             newAppName = ""
             isTextFieldFocused = false
+            PersistenceManager.shared.saveApps(apps)
         }
         haptics()
     }
@@ -140,6 +143,7 @@ struct AppsView: View {
     private func removeApp(_ app: AppItem) {
         withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
             apps.removeAll { $0 == app }
+            PersistenceManager.shared.saveApps(apps)
         }
         haptics()
     }
