@@ -37,17 +37,17 @@ struct SourcesView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color.black.ignoresSafeArea()
+                Color.white.ignoresSafeArea()
                 VStack(spacing: 8) {
                     // Barre d’ajout
                     HStack(spacing: 6) {
                         HStack(spacing: 0) {
                             TextField("Nom de la source...", text: $newSourceName)
                                 .font(.system(size: 15))
-                                .foregroundColor(.white)
+                                .foregroundColor(.black)
                                 .placeholder(when: newSourceName.isEmpty) {
                                     Text("Nom de la source...")
-                                        .foregroundColor(.white.opacity(0.4))
+                                        .foregroundColor(.black.opacity(0.3))
                                         .font(.system(size: 15))
                                 }
                                 .textFieldStyle(.plain)
@@ -55,10 +55,10 @@ struct SourcesView: View {
                                 .frame(height: 30)
                             TextField("URL...", text: $newSourceURL)
                                 .font(.system(size: 15))
-                                .foregroundColor(.white)
+                                .foregroundColor(.black)
                                 .placeholder(when: newSourceURL.isEmpty) {
                                     Text("URL...")
-                                        .foregroundColor(.white.opacity(0.4))
+                                        .foregroundColor(.black.opacity(0.3))
                                         .font(.system(size: 15))
                                 }
                                 .textFieldStyle(.plain)
@@ -66,7 +66,7 @@ struct SourcesView: View {
                         }
                         .padding(.horizontal, 8)
                         .frame(height: 36)
-                        .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Color.black.opacity(0.8)))
+                        .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Color.gray.opacity(0.12)))
                         Button(action: addSource) {
                             Image(systemName: "plus.circle.fill")
                                 .font(.system(size: 20, weight: .semibold))
@@ -80,22 +80,22 @@ struct SourcesView: View {
                     // Barre de recherche
                     HStack(spacing: 4) {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(.white.opacity(0.6))
+                            .foregroundColor(.gray)
                             .font(.system(size: 14))
                         TextField("Recherche de sources...", text: $searchText)
                             .font(.system(size: 14))
-                            .foregroundColor(.white)
+                            .foregroundColor(.black)
                             .placeholder(when: searchText.isEmpty) {
                                 Text("Recherche de sources...")
-                                    .foregroundColor(.white.opacity(0.4))
+                                    .foregroundColor(.black.opacity(0.3))
                                     .font(.system(size: 14))
                             }
                             .textFieldStyle(.plain)
-                            .opacity(0.8)
+                            .opacity(0.9)
                     }
                     .padding(.vertical, 6)
                     .padding(.horizontal, 10)
-                    .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Color.black.opacity(0.8)))
+                    .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Color.gray.opacity(0.12)))
                     .padding(.horizontal, 10)
 
                     // Liste des sources
@@ -113,10 +113,10 @@ struct SourcesView: View {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(source.name)
                                             .font(.system(size: 15, weight: .semibold))
-                                            .foregroundColor(.white)
+                                            .foregroundColor(.black)
                                         Text(source.url)
                                             .font(.system(size: 12))
-                                            .foregroundColor(.secondary)
+                                            .foregroundColor(.gray)
                                     }
                                     Spacer()
                                     Button(action: { removeSource(source) }) {
@@ -133,7 +133,7 @@ struct SourcesView: View {
                         }
                     }
                     .listStyle(.plain)
-                    .background(Color.black)
+                    .background(Color.white)
                 }
                 .padding(.vertical, 6)
                 .navigationTitle("Sources")
@@ -142,7 +142,7 @@ struct SourcesView: View {
                     VStack {
                         if isRepoLoading {
                             ProgressView("Chargement…")
-                                .foregroundColor(.white)
+                                .foregroundColor(.black)
                         } else if let error = repoError {
                             VStack(spacing: 16) {
                                 Text("Erreur : \(error)")
@@ -168,8 +168,8 @@ struct SourcesView: View {
                                         .frame(width: 42, height: 42)
                                         .clipShape(RoundedRectangle(cornerRadius: 9))
                                         VStack(alignment: .leading, spacing: 3) {
-                                            Text(app.name).font(.headline).foregroundColor(.white)
-                                            Text(app.bundleIdentifier).font(.caption2).foregroundColor(.secondary)
+                                            Text(app.name).font(.headline).foregroundColor(.black)
+                                            Text(app.bundleIdentifier).font(.caption2).foregroundColor(.gray)
                                             if let version = app.versions.first?.version {
                                                 Text("Dernière version : \(version)").font(.caption2).foregroundColor(.accentColor)
                                             }
@@ -183,12 +183,12 @@ struct SourcesView: View {
                                 }
                             }
                             .listStyle(.plain)
-                            .background(Color.black)
+                            .background(Color.white)
                             .navigationTitle(repo.name)
                         }
                     }
                     .padding()
-                    .background(Color.black.ignoresSafeArea())
+                    .background(Color.white.ignoresSafeArea())
                 }
             }
         }
@@ -256,3 +256,5 @@ struct SourcesView: View {
         }.resume()
     }
 }
+
+

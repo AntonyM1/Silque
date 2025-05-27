@@ -24,16 +24,16 @@ struct OTAInstallationView: View {
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color.white.ignoresSafeArea()
             VStack(spacing: 8) {
                 HStack(spacing: 6) {
                     HStack(spacing: 0) {
                         TextField("Nom...", text: $newInstallName)
                             .font(.system(size: 15))
-                            .foregroundColor(.white)
+                            .foregroundColor(.black)
                             .placeholder(when: newInstallName.isEmpty) {
                                 Text("Nom...")
-                                    .foregroundColor(.white.opacity(0.4))
+                                    .foregroundColor(.black.opacity(0.3))
                                     .font(.system(size: 15))
                             }
                             .textFieldStyle(.plain)
@@ -41,10 +41,10 @@ struct OTAInstallationView: View {
                             .frame(height: 30)
                         TextField("Lien OTA...", text: $newInstallLink)
                             .font(.system(size: 15))
-                            .foregroundColor(.white)
+                            .foregroundColor(.black)
                             .placeholder(when: newInstallLink.isEmpty) {
                                 Text("Lien OTA...")
-                                    .foregroundColor(.white.opacity(0.4))
+                                    .foregroundColor(.black.opacity(0.3))
                                     .font(.system(size: 15))
                             }
                             .textFieldStyle(.plain)
@@ -52,7 +52,7 @@ struct OTAInstallationView: View {
                     }
                     .padding(.horizontal, 8)
                     .frame(height: 36)
-                    .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Color.black.opacity(0.8)))
+                    .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Color.gray.opacity(0.12)))
                     Button(action: addInstallation) {
                         Image(systemName: "plus.circle.fill").font(.system(size: 20, weight: .semibold)).foregroundColor(accentManager.color)
                     }
@@ -61,21 +61,21 @@ struct OTAInstallationView: View {
                 .padding(.horizontal, 10)
                 .padding(.top, 6)
                 HStack(spacing: 4) {
-                    Image(systemName: "magnifyingglass").foregroundColor(.white.opacity(0.6)).font(.system(size: 14))
+                    Image(systemName: "magnifyingglass").foregroundColor(.gray).font(.system(size: 14))
                     TextField("Recherche d'installations...", text: $searchText)
                         .font(.system(size: 14))
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .placeholder(when: searchText.isEmpty) {
                             Text("Recherche d'installations...")
-                                .foregroundColor(.white.opacity(0.4))
+                                .foregroundColor(.black.opacity(0.3))
                                 .font(.system(size: 14))
                         }
                         .textFieldStyle(.plain)
-                        .opacity(0.8)
+                        .opacity(0.9)
                 }
                 .padding(.vertical, 6)
                 .padding(.horizontal, 10)
-                .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Color.black.opacity(0.8)))
+                .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Color.gray.opacity(0.12)))
                 .padding(.horizontal, 10)
                 ScrollView {
                     LazyVStack(spacing: 8) {
@@ -89,10 +89,10 @@ struct OTAInstallationView: View {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(inst.name)
                                             .font(.system(size: 15, weight: .semibold))
-                                            .foregroundColor(.white)
+                                            .foregroundColor(.black)
                                         Text(inst.link)
                                             .font(.system(size: 12))
-                                            .foregroundColor(.secondary)
+                                            .foregroundColor(.gray)
                                     }
                                     Spacer()
                                     Button(action: { removeInstallation(inst) }) {

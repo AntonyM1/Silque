@@ -5,7 +5,7 @@ struct SettingsView: View {
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color.white.ignoresSafeArea()
             VStack(spacing: 16) {
                 Image(systemName: "gearshape.fill")
                     .resizable()
@@ -14,7 +14,7 @@ struct SettingsView: View {
                     .padding(.top, 24)
                 Text("Réglages")
                     .font(.title2.weight(.bold))
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                 Spacer()
             }
         }

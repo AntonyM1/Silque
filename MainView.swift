@@ -6,7 +6,7 @@ struct MainView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            Color.black.ignoresSafeArea()
+            Color.white.ignoresSafeArea()
             Group {
                 switch selectedTab {
                 case .apps: AppsView().environmentObject(accentManager)

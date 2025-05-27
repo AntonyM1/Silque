@@ -40,8 +40,9 @@ struct CertificatesView: View {
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color.white.ignoresSafeArea()
             VStack(spacing: 16) {
+                // Bouton d'import avec fond très clair et texte coloré
                 Button(action: {
                     importStep = .p12
                 }) {
@@ -53,66 +54,69 @@ struct CertificatesView: View {
                     }
                     .foregroundColor(accentManager.color)
                     .padding(.horizontal, 18)
-                    .padding(.vertical, 10)
-                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.black.opacity(0.8)))
+                    .padding(.vertical, 16)
+                    .frame(maxWidth: .infinity)
+                    .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemGray6)))
                 }
+                .padding(.horizontal, 8)
+                .padding(.top, 8)
 
                 // Barre de recherche
                 HStack(spacing: 4) {
                     Image(systemName: "magnifyingglass")
-                        .foregroundColor(.white.opacity(0.6))
+                        .foregroundColor(.gray)
                         .font(.system(size: 14))
                     TextField("Recherche...", text: $searchText)
                         .font(.system(size: 14))
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .placeholder(when: searchText.isEmpty) {
                             Text("Recherche...")
-                                .foregroundColor(.white.opacity(0.4))
+                                .foregroundColor(.black.opacity(0.3))
                                 .font(.system(size: 14))
                         }
                         .textFieldStyle(.plain)
-                        .opacity(0.8)
+                        .opacity(0.9)
                 }
-                .padding(.vertical, 6)
+                .padding(.vertical, 8)
                 .padding(.horizontal, 10)
-                .background(RoundedRectangle(cornerRadius: 10).fill(Color.black.opacity(0.8)))
+                .background(RoundedRectangle(cornerRadius: 12).fill(Color(.systemGray6)))
                 .padding(.horizontal, 10)
 
                 // Liste des couples
                 ScrollView {
-                    LazyVStack(spacing: 8) {
+                    LazyVStack(spacing: 12) {
                         ForEach(filteredCertificates) { pair in
-                            VisionOSCard {
-                                HStack(spacing: 12) {
-                                    Image(systemName: "doc.on.doc.fill")
-                                        .font(.system(size: 22, weight: .semibold))
-                                        .foregroundColor(accentManager.color)
-                                        .frame(width: 30, height: 30)
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(pair.p12URL.lastPathComponent)
-                                            .font(.system(size: 15, weight: .semibold))
-                                            .foregroundColor(.white)
-                                        Text(pair.mobileprovisionURL.lastPathComponent)
-                                            .font(.system(size: 13))
-                                            .foregroundColor(.white.opacity(0.7))
-                                    }
-                                    Spacer()
-                                    Button(action: { removeCertificate(pair) }) {
-                                        Image(systemName: "trash")
-                                            .font(.system(size: 17, weight: .regular))
-                                            .foregroundColor(.red)
-                                    }
-                                    .buttonStyle(.plain)
-                                    .accessibilityLabel("Supprimer le couple")
+                            // Card sur fond gris clair, contenu gris foncé
+                            HStack(spacing: 12) {
+                                Image(systemName: "doc.on.doc.fill")
+                                    .font(.system(size: 22, weight: .semibold))
+                                    .foregroundColor(accentManager.color)
+                                    .frame(width: 30, height: 30)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(pair.p12URL.lastPathComponent)
+                                        .font(.system(size: 15, weight: .semibold))
+                                        .foregroundColor(Color(.darkGray))
+                                    Text(pair.mobileprovisionURL.lastPathComponent)
+                                        .font(.system(size: 13))
+                                        .foregroundColor(Color(.gray))
                                 }
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 7)
+                                Spacer()
+                                Button(action: { removeCertificate(pair) }) {
+                                    Image(systemName: "trash")
+                                        .font(.system(size: 17, weight: .regular))
+                                        .foregroundColor(.red)
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityLabel("Supprimer le couple")
                             }
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 12)
+                            .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemGray6)))
                             .padding(.horizontal, 4)
                         }
                     }
+                    .padding(.top, 6)
                 }
-                .padding(.top, 5)
             }
             .padding(.vertical, 8)
             .navigationTitle("Certificats & Profils")

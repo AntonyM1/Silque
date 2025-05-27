@@ -26,11 +26,11 @@ struct AppDetailView: View {
 
                 Text(app.name)
                     .font(.title)
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
 
                 Text(app.bundleIdentifier)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.gray)
 
                 if let version = app.versions.first {
                     Text("Version : \(version.version)")
@@ -41,7 +41,7 @@ struct AppDetailView: View {
                 if let description = app.versions.first?.localizedDescription?["fr"] ?? app.versions.first?.localizedDescription?["en"] {
                     Text(description)
                         .font(.body)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .padding(.top, 4)
                 }
 
@@ -78,7 +78,7 @@ struct AppDetailView: View {
             }
             .padding()
         }
-        .background(Color.black.ignoresSafeArea())
+        .background(Color.white.ignoresSafeArea())
         .navigationTitle(app.name)
     }
 
@@ -124,7 +124,6 @@ struct AppDetailView: View {
             }
         }
         task.resume()
-        // Nettoyage de l'observation : on ne la garde pas (risque minime ici car closure brève, sinon stocker dans un @StateObject)
     }
 
     private func openInFiles(url: URL) {

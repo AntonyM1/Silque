@@ -1,61 +1,56 @@
 import SwiftUI
 
 struct ProfileSheetView: View {
-    @AppStorage("userFirstName") private var userFirstName: String = ""
     @EnvironmentObject var accentManager: AccentColorManager
-    @FocusState private var isTextFieldFocused: Bool
-    @State private var tempAccent: Color = .purple // valeur par défaut, sera synchronisée dans .onAppear
+    @State private var showColorPicker = false
+    @State private var tempColor: Color = .accentColor
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
-            VStack(spacing: 24) {
+            Color.white.ignoresSafeArea()
+            VStack(spacing: 20) {
                 Image(systemName: "person.crop.circle.fill")
                     .resizable()
-                    .frame(width: 70, height: 70)
+                    .frame(width: 80, height: 80)
                     .foregroundColor(accentManager.color)
-                    .padding(.top, 24)
-
-                Text(userFirstName.isEmpty ? "Profil" : userFirstName)
+                    .padding(.top, 35)
+                Text("Mon profil")
                     .font(.title2.weight(.bold))
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
 
-                HStack {
-                    TextField("Entrez votre prénom", text: $userFirstName)
-                        .font(.system(size: 18))
-                        .foregroundColor(.white)
-                        .placeholder(when: userFirstName.isEmpty) {
-                            Text("Entrez votre prénom")
-                                .foregroundColor(.white.opacity(0.4))
-                                .font(.system(size: 18))
-                        }
-                        .textFieldStyle(.plain)
-                        .focused($isTextFieldFocused)
-                        .frame(height: 36)
-                        .padding(.horizontal, 10)
-                        .background(RoundedRectangle(cornerRadius: 12).fill(Color.black.opacity(0.8)))
+                Button {
+                    tempColor = accentManager.color
+                    showColorPicker = true
+                } label: {
+                    Text("Personnaliser la couleur d'accent")
+                        .font(.system(size: 15, weight: .medium))
+                        .padding(.vertical, 7)
+                        .padding(.horizontal, 18)
+                        .background(RoundedRectangle(cornerRadius: 12).fill(accentManager.color.opacity(0.2)))
+                        .foregroundColor(accentManager.color)
                 }
-                .padding(.horizontal, 16)
-
-                // ===> Ajoute ceci pour choisir la couleur d’accent
-                HStack {
-                    Text("Couleur d’accent")
-                        .foregroundColor(.white)
-                    ColorPicker("", selection: $tempAccent, supportsOpacity: false)
-                        .labelsHidden()
-                        .onChange(of: tempAccent) { newColor in
-                            accentManager.setAccentColor(newColor)
+                .sheet(isPresented: $showColorPicker) {
+                    VStack(spacing: 18) {
+                        Text("Choisir une couleur")
+                            .font(.headline)
+                            .foregroundColor(.black)
+                        ColorPicker("Accent", selection: $tempColor, supportsOpacity: false)
+                            .padding()
+                        Button("Appliquer") {
+                            accentManager.setAccentColor(tempColor)
+                            showColorPicker = false
                         }
+                        .font(.headline)
+                        .foregroundColor(tempColor)
+                        .padding(.bottom, 18)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.white.ignoresSafeArea())
                 }
-                .padding(.horizontal, 16)
 
                 Spacer()
             }
-            .padding(.top, 32)
-            .onAppear {
-                tempAccent = accentManager.color
-            }
         }
-        .navigationTitle(userFirstName.isEmpty ? "Profil" : userFirstName)
+        .navigationTitle("Moi")
     }
 }

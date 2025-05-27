@@ -15,10 +15,7 @@ struct AppItem: Identifiable, Equatable, Codable {
 struct AppsView: View {
     @EnvironmentObject var accentManager: AccentColorManager
     @State private var apps: [AppItem] = PersistenceManager.shared.loadApps()
-    @State private var newAppName = ""
-    @State private var newAppIcon = "app.fill"
     @State private var searchText = ""
-    @FocusState private var isTextFieldFocused: Bool
 
     var filteredApps: [AppItem] {
         if searchText.isEmpty { return apps }
@@ -27,68 +24,27 @@ struct AppsView: View {
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color.white.ignoresSafeArea()
             VStack(spacing: 8) {
-                // Barre de saisie
-                HStack(spacing: 6) {
-                    HStack(spacing: 0) {
-                        TextField("Nouvelle app...", text: $newAppName)
-                            .font(.system(size: 15))
-                            .foregroundColor(.white)
-                            .placeholder(when: newAppName.isEmpty) {
-                                Text("Nouvelle app...")
-                                    .foregroundColor(.white.opacity(0.4))
-                                    .font(.system(size: 15))
-                            }
-                            .textFieldStyle(.plain)
-                            .focused($isTextFieldFocused)
-                            .frame(height: 30)
-                        Menu {
-                            ForEach(["app.fill", "note.text", "safari.fill", "envelope.fill", "star.fill", "music.note", "gamecontroller.fill"], id: \.self) { icon in
-                                Button { newAppIcon = icon } label: {
-                                    Label(icon, systemImage: icon)
-                                }
-                            }
-                        } label: {
-                            ZStack {
-                                Circle().fill(Color.black.opacity(0.4)).frame(width: 24, height: 24)
-                                Image(systemName: newAppIcon)
-                                    .font(.system(size: 13, weight: .medium))
-                                    .foregroundColor(accentManager.color)
-                            }
-                        }.buttonStyle(.plain)
-                    }
-                    .padding(.horizontal, 8)
-                    .frame(height: 36)
-                    .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Color.black.opacity(0.8)))
-                    Button(action: addApp) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(accentManager.color)
-                    }
-                    .disabled(newAppName.trimmingCharacters(in: .whitespaces).isEmpty)
-                }
-                .padding(.horizontal, 10)
-                .padding(.top, 6)
                 // Barre de recherche
                 HStack(spacing: 4) {
                     Image(systemName: "magnifyingglass")
-                        .foregroundColor(.white.opacity(0.6))
+                        .foregroundColor(.gray)
                         .font(.system(size: 14))
                     TextField("Recherche d'apps...", text: $searchText)
                         .font(.system(size: 14))
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .placeholder(when: searchText.isEmpty) {
                             Text("Recherche d'apps...")
-                                .foregroundColor(.white.opacity(0.4))
+                                .foregroundColor(.black.opacity(0.3))
                                 .font(.system(size: 14))
                         }
                         .textFieldStyle(.plain)
-                        .opacity(0.8)
+                        .opacity(0.9)
                 }
                 .padding(.vertical, 6)
                 .padding(.horizontal, 10)
-                .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Color.black.opacity(0.8)))
+                .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Color.gray.opacity(0.12)))
                 .padding(.horizontal, 10)
                 // Liste d'apps
                 ScrollView {
@@ -102,7 +58,7 @@ struct AppsView: View {
                                         .frame(width: 30, height: 30)
                                     Text(app.name)
                                         .font(.system(size: 16, weight: .semibold))
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.black)
                                     Spacer()
                                     Button(action: { removeApp(app) }) {
                                         Image(systemName: "trash")
@@ -125,19 +81,6 @@ struct AppsView: View {
             .padding(.vertical, 6)
             .navigationTitle("Apps")
         }
-    }
-
-    private func addApp() {
-        let name = newAppName.trimmingCharacters(in: .whitespaces)
-        guard !name.isEmpty else { return }
-        let new = AppItem(name: name, icon: newAppIcon)
-        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
-            apps.insert(new, at: 0)
-            newAppName = ""
-            isTextFieldFocused = false
-            PersistenceManager.shared.saveApps(apps)
-        }
-        haptics()
     }
 
     private func removeApp(_ app: AppItem) {
