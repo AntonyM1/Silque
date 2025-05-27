@@ -19,13 +19,6 @@ struct AltStoreApp: Codable, Identifiable {
     let iconURL: String
     let bundleIdentifier: String
     let versions: [AltStoreAppVersion]
-    
-    enum CodingKeys: String, CodingKey {
-        case name
-        case iconURL = "iconURL"
-        case bundleIdentifier
-        case versions
-    }
 }
 
 struct AltStoreAppVersion: Codable {

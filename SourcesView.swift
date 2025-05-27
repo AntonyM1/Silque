@@ -1,7 +1,5 @@
 import SwiftUI
 
-// MARK: - Modèles
-
 struct SourceItem: Identifiable, Equatable, Codable {
     let id: UUID
     let name: String
@@ -13,28 +11,6 @@ struct SourceItem: Identifiable, Equatable, Codable {
         self.url = url
     }
 }
-
-struct AltStoreRepository: Codable {
-    let name: String
-    let apps: [AltStoreApp]
-}
-
-struct AltStoreApp: Codable, Identifiable {
-    var id: String { bundleIdentifier }
-    let name: String
-    let iconURL: String
-    let bundleIdentifier: String
-    let versions: [AltStoreAppVersion]
-}
-
-struct AltStoreAppVersion: Codable {
-    let version: String
-    let date: String?
-    let url: String
-    let localizedDescription: [String: String]?
-}
-
-// MARK: - Vue principale
 
 struct SourcesView: View {
     @EnvironmentObject var accentManager: AccentColorManager
@@ -278,21 +254,5 @@ struct SourcesView: View {
                 }
             }
         }.resume()
-    }
-}
-
-// MARK: - Placeholder extension
-
-extension View {
-    @ViewBuilder
-    func placeholder<Content: View>(
-        when shouldShow: Bool,
-        alignment: Alignment = .leading,
-        @ViewBuilder placeholder: () -> Content
-    ) -> some View {
-        ZStack(alignment: alignment) {
-            if shouldShow { placeholder().allowsHitTesting(false) }
-            self
-        }
     }
 }
